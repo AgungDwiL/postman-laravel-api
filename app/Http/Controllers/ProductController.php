@@ -3,11 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function get(int $id): JsonResponse
+    {
+        $product = Product::where('id', $id)->first();
+
+        if (!$product) {
+            return response()->json([
+                'errors' => [
+                    'message' => "product not found",
+                ],
+            ]);
+        } else {
+            return response()->json([
+                'data' => [
+                    'name' => $product->name,
+                    'value' => $product->value,
+                    'quantity' => $product->quantity,
+                ],
+            ]);
+        }
+    }
+
     public function create(Request $request): JsonResponse
     {
         $data = $request->validate([
