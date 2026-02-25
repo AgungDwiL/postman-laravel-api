@@ -30,6 +30,25 @@ class ProductController extends Controller
         }
     }
 
+    public function delete(int $id): JsonResponse
+    {
+        $product = Product::where('id', $id)->first();
+
+        if (!$product) {
+            return response()->json([
+                'errors' => [
+                    'message' => "product not found",
+                ],
+            ]);
+        } else {
+            $product->delete();
+            return response()->json([
+                "message" => "product deleted",
+            ]);
+        }
+    }
+
+
     public function update(int $id, Request $request): JsonResponse
     {
         $product = Product::where('id', $id)->first();
