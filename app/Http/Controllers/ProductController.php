@@ -30,6 +30,37 @@ class ProductController extends Controller
         }
     }
 
+    public function update(int $id, Request $request): JsonResponse
+    {
+        $product = Product::where('id', $id)->first();
+
+        if (!$product) {
+            return response()->json([
+                'errors' => [
+                    'message' => "product not found",
+                ],
+            ]);
+        } else {
+            $data = $request->validate([
+                'name' => 'nullable|string|max:50|min:3',
+                'value' => 'nullable|integer',
+                'quantity' => 'nullable|integer|min:1',
+
+            ]);
+
+            $product->update($data);
+
+            return response()->json([
+                'data' => [
+                    'name' => $product->name,
+                    'value' => $product->value,
+                    'quantity' => $product->quantity,
+                ],
+            ]);
+        }
+    }
+
+
     public function create(Request $request): JsonResponse
     {
         $data = $request->validate([

@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/add-product', [ProductController::class, 'create']);
 Route::get('/{id}', [ProductController::class, 'get'])->where('id', '[0-9]+');
+Route::patch('/{id}', [ProductController::class, 'update'])->where('id', '[0-9]+');
